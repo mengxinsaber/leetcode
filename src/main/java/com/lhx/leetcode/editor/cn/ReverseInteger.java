@@ -1,4 +1,4 @@
-package editor.cn;
+package com.lhx.leetcode.editor.cn;
 
 /**
  * @author lihongxiang
