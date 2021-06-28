@@ -38,21 +38,83 @@ public class ImplementStrstr {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int strStr(String haystack, String needle) {
-            if ("".equals(needle)) {
-                return 0;
+            //BM
+            int hayLen = haystack.length();
+            int needLen = needle.length();
+            char[] hayCharArr = haystack.toCharArray();
+            char[] needCharArr = needle.toCharArray();
+            int charNum = 256;
+            //
+            int[] bc = new int[charNum];
+            for (int i = 0; i < charNum; ++i) {
+                bc[i] = -1;
             }
-            int l = needle.length();
-            int inx = 0;
-            while (haystack.length() - inx - l >= 0) {
-                if (haystack.substring(inx, inx + l).equals(needle)) {
-                    return inx;
-                } else {
-                    inx++;
+
+            for (int i = 0; i < needLen; ++i) {
+                int ascii = needCharArr[i];
+                bc[ascii] = i;
+            }
+
+            int[] suffixIndex = new int[needLen];
+            boolean[] isPre = new boolean[needLen];
+            for (int i = 0; i < needLen; ++i) {
+                suffixIndex[i] = -1;
+                isPre[i] = false;
+            }
+
+
+            for (int i = 0; i < needLen - 1; ++i) {
+                int j= i, k = 0;
+                while (j >= 0 && needCharArr[j] == needCharArr[needLen - 1 - k]) {
+                    --j;
+                    ++k;
+                    suffixIndex[k] = j + 1;
+                }
+                if (j == -1) {
+                    isPre[k] = true;
                 }
             }
+
+            int a = 0;
+            while (a <= hayLen - needLen) {
+                int n;
+                for (n = needLen - 1; n >= 0; --n) {
+                    if (hayCharArr[a + n] != needCharArr[n]) {
+                        break;
+                    }
+                }
+
+                if (n < 0) {
+                    return a;
+                }
+
+                int x = n - bc[hayCharArr[a + n]], y = 0;
+
+                int goodSuffixLength = needLen - 1 - n;
+                if (y < needLen - 1 && goodSuffixLength > 0) {
+                    if (suffixIndex[goodSuffixLength] != -1) {
+                        y = n - suffixIndex[goodSuffixLength] + 1;
+                    } else {
+                        y = needLen;
+                        for (int i = n + 2; i < needLen - 1; ++i) {
+                            if (isPre[needLen - i]) {
+                                y = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                a = a+Math.max(x,y);
+            }
+
+
             return -1;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
+    public static void main(String[] args) {
+        System.out.println(new ImplementStrstr().new Solution().strStr("abcaa","bc"));
+    }
 }
