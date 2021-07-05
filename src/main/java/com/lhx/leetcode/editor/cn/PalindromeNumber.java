@@ -7,7 +7,7 @@ package com.lhx.leetcode.editor.cn;
  */
 public class PalindromeNumber {
 
-//问题描述
+    //问题描述
 //判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。 
 //
 // 示例 1: 
@@ -35,19 +35,24 @@ public class PalindromeNumber {
 // 你能不将整数转为字符串来解决这个问题吗？ 
 // Related Topics 数学 
 // 👍 1351 👎 0
-
+    public static void main(String[] args) {
+        System.out.println(Solution.isPalindrome(121));
+    }
 
     //实现
     //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-        public boolean isPalindrome(int x) {
-            int num = 0, y, l = x;
-            while (x > 0) {
-                y = x % 10;
-                num = num * 10 + y;
+    static class Solution {
+        public static boolean isPalindrome(int x) {
+            //首先排除负数和
+            if (x < 0 || (x % 10 == 0) && x != 0) {
+                return false;
+            }
+            int num = 0;
+            while (x > num) {
+                num = num * 10 + x % 10;
                 x /= 10;
             }
-            return num == l;
+            return num == x || x == num / 10;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
