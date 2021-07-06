@@ -6,7 +6,6 @@ package com.lhx.leetcode.editor.cn;
  * @data 2021-07-06 17:00:22
  */
 public class GuessNumberHigherOrLower {
-
 //问题描述
 //猜数字游戏的规则如下： 
 //
@@ -84,17 +83,23 @@ public class GuessNumberHigherOrLower {
         public int guessNumber(int n) {
             int left = 1, right = n;
             while (true) {
-                int mid = left + (right - left) /2;
+                int mid = left + (right - left) / 2;
                 if (guess(mid) == -1) {      //mid > target
                     right = mid;
-                }else if (guess(mid) == 1) { // mid < target
+                } else if (guess(mid) == 1) { // mid < target
                     left = mid + 1;
-                }else {                      //mid = target
+                } else {                      //mid = target
                     return mid;
                 }
             }
         }
     }
-//leetcode submit region end(Prohibit modification and deletion)
 
+
+    //leetcode submit region end(Prohibit modification and deletion)
+    class GuessGame {
+        int guess(int num) {
+            return 0;
+        }
+    }
 }
