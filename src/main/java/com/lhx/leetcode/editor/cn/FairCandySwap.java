@@ -1,8 +1,6 @@
 package com.lhx.leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author lihongxiang
@@ -75,35 +73,54 @@ public class FairCandySwap {
     class Solution {
         public int[] fairCandySwap(int[] aliceSizes, int[] bobSizes) {
             int aliceCount = 0, bobCount = 0;
-            Map<Integer, Integer> aliceMap = new HashMap<>(aliceSizes.length, 1);
-            for (int i = 0; i < aliceSizes.length; i++) {
-                aliceMap.putIfAbsent(aliceSizes[i], i);
-                aliceCount = aliceCount + aliceSizes[i];
+            Set<Integer> set = new HashSet<>(aliceSizes.length, 1);
+            for (int aliceSize : aliceSizes) {
+                set.add(aliceSize);
+                aliceCount = aliceCount + aliceSize;
             }
-            Map<Integer, Integer> bobMap = new HashMap<>(bobSizes.length, 1);
-            for (int i = 0; i < bobSizes.length; i++) {
-                bobMap.putIfAbsent(bobSizes[i], i);
-                bobCount = bobCount + bobSizes[i];
+            for (int bobSize : bobSizes) {
+                bobCount = bobCount + bobSize;
             }
-            boolean flag = aliceCount > bobCount;
-            int num = (flag ? aliceCount - bobCount : bobCount - aliceCount) / 2,
-                    i = 0, aliceNum = 0, bobNum = 0;
-            while (i <= 100000) {
-                if (flag) {
-                    aliceNum = num + i;
-                    bobNum = i;
-                } else {
-                    bobNum = num + i;
-                    aliceNum = i;
+            int num = (aliceCount - bobCount) / 2;
+            for (int bobSize : bobSizes) {
+                if (set.contains(num + bobSize)) {
+                    return new int[]{num + bobSize, bobSize};
                 }
-                if (aliceMap.containsKey(aliceNum) && bobMap.containsKey(bobNum)) {
-                    return new int[]{aliceNum, bobNum};
-                }
-                i++;
             }
             return null;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
-
+    /**
+     public int[] fairCandySwap(int[] aliceSizes, int[] bobSizes) {
+     int aliceCount = 0, bobCount = 0;
+     Map<Integer, Integer> aliceMap = new HashMap<>(aliceSizes.length, 1);
+     for (int i = 0; i < aliceSizes.length; i++) {
+     aliceMap.putIfAbsent(aliceSizes[i], i);
+     aliceCount = aliceCount + aliceSizes[i];
+     }
+     Map<Integer, Integer> bobMap = new HashMap<>(bobSizes.length, 1);
+     for (int i = 0; i < bobSizes.length; i++) {
+     bobMap.putIfAbsent(bobSizes[i], i);
+     bobCount = bobCount + bobSizes[i];
+     }
+     boolean flag = aliceCount > bobCount;
+     int num = (flag ? aliceCount - bobCount : bobCount - aliceCount) / 2,
+     i = 0, aliceNum = 0, bobNum = 0;
+     while (i <= 100000) {
+     if (flag) {
+     aliceNum = num + i;
+     bobNum = i;
+     } else {
+     bobNum = num + i;
+     aliceNum = i;
+     }
+     if (aliceMap.containsKey(aliceNum) && bobMap.containsKey(bobNum)) {
+     return new int[]{aliceNum, bobNum};
+     }
+     i++;
+     }
+     return null;
+     }
+     */
 }
